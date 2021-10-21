@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <title>Frontent Reto 4</title>
+  </head>
+  <body>
+
+            <!-- ===== NAV BAR ==== -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Inicio</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" onclick="navbar('disfraz')" href="#disfraz">Disfraz</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#cliente" onclick="navbar('cliente')">Cliente</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#mensaje" onclick="navbar('mensaje')">Mensaje</a>
+              </li>             
+            </ul>           
+          </div>
+        </div>
+      </nav>
+
+        <!-- ===== FIN  NAV BAR ==== -->
+        
+
+      <div class="container mt-5" id="contenedor">
+        <div class="row">
+            <div class="col-sm-4 mt-3">
+              <div class="form-floating mb-3">
+                  <input type="number" class="form-control" id="idDisfraz" placeholder="id" required>
+                  <label for="floatingInput">Id</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="nameDisfraz" placeholder="name">
+                  <label for="floatingPassword">Nombre</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="brandDisfraz" placeholder="brand">
+                  <label for="floatingPassword">Marca</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="number" class="form-control" id="modelDisfraz" placeholder="modelo">
+                  <label for="floatingPassword">Modelo</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="category_idDisfraz" placeholder="category id">
+                  <label for="floatingPassword">Category Id</label>
+                </div>
+                <div class="form-floating mb-3 d-grid gap-2">
+                  <button type="button" onclick="guardarDisfraz()" class="btn btn-outline-success liveToastBtn" name="guardar">Guardar</button>
+                </div>
+                
+
+            </div>
+
+            <div class="col-sm-1" id="toast"></div>
+
+
+            <div class="col-sm-7">
+              <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Marca</th>
+                      <th scope="col">Modelo</th>
+                      <th scope="col">Categoia Id</th>
+                      <th scope="col">Eliminar</th>
+                      <th scope="col">Detalle</th>                      
+                    </tr>
+                  </thead>
+                  <tbody id="tablaDisfraz">
+                                       
+                  </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+
+      
+<!-- ==== Toast ===== -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true">   
+    <div class="toast-body" id="toastBody">
+      
+    </div>
+  </div>
+</div>
+
+<!-- Modal Disfraz-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar Disfraz</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="actualizarDisfraz(1)">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Cliente-->
+<div class="modal fade" id="exampleModalCliente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBodyCliente">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="actualizarCliente(1)">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Mensaje-->
+<div class="modal fade" id="exampleModalMensaje" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar Mensaje</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBodyMensaje">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="actualizarMensaje(1)">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <script src="js/app.js"></script>
+    <script src="js/disfraz.js"></script>
+    <script src="js/cliente.js"></script>
+    <script src="js/mensaje.js"></script>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>

@@ -1,0 +1,29 @@
+.nav-item {
+    margin-left: 20vw;
+}
+
+iframe {
+    width: 100%;
+    height: 100vh;
+}
+
+.rojo {
+    color: red;
+}
+
+.azul {
+    color:royalblue;
+    
+}
+
+.pointer:hover {
+    cursor: pointer;
+}
+
+td, th {   
+    text-align: center;
+}
+
+.toast-body {
+    color: white;
+}
