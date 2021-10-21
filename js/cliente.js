@@ -1,33 +1,32 @@
 console.log('corriendo Cliente')
 
 
-const limpiarCliente = () => {
-    document.getElementById('idClient').value = '';
+const limpiarCliente = () => {    
     document.getElementById('nameClient').value = '';
     document.getElementById('emailClient').value = '';
     document.getElementById('ageClient').value = '';    
 }
 
-const guardarCliente = async () => {
-    const idClient = document.getElementById('idClient').value;
+const guardarCliente = async () => {    
     const nameClient = document.getElementById('nameClient').value;
     const emailClient = document.getElementById('emailClient').value;
     const ageClient = document.getElementById('ageClient').value;
+    const passwordClient = document.getElementById('passwordClient').value;
     
-    console.log(idClient)
-    if(idClient==''){
+    
+    if(nameClient==''){
         return alert('Debe ingresar ID');
     }
 
-    const cliente = {
-        id:idClient,
+    const cliente = {        
         name:nameClient,
         email:emailClient,
-        age:ageClient        
+        age:ageClient,
+        password:passwordClient     
     }
 
     try {
-        const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client',{
+        const datos = await fetch('http://168.138.233.89:8080/api/Client/save',{
             method:'POST',   
             mode: 'cors',
             headers: {
@@ -58,8 +57,7 @@ const cargarCliente = async () => {
     respuesta.forEach(element => {   
         //console.log(element)     
         stringCliente += `
-        <tr>
-            <th scope="row">${element.idClient}</th>
+        <tr>            
             <td>${element.name}</td>
             <td>${element.email}</td>
             <td>${element.age}</td>            
@@ -79,7 +77,7 @@ window.onload = cargarCliente();
 const eliminarCliente = async (id) => {
     console.log(id)
     try {
-        const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client',{
+        const datos = await fetch('http://168.138.233.89:8080/api/Client/'+id,{
         method:'DELETE',
         mode:'cors',
         headers: {
@@ -99,24 +97,25 @@ const eliminarCliente = async (id) => {
 }
 
 
-const actualizarCliente = async (id) => {
-    console.log(id)
+const actualizarCliente = async () => {    
     const idClienteUpdate = document.getElementById('idClienteUpdate').value;
     const nameClienteUpdate = document.getElementById('nameClienteUpdate').value;
     const emailClienteUpdate = document.getElementById('emailClienteUpdate').value;
     const ageClienteUpdate = document.getElementById('ageClienteUpdate').value;
+    const passwordClienteUpdate = document.getElementById('passwordClienteUpdate').value;
     
 
     const cliente = {
-        id:idClienteUpdate,
+        idClient:idClienteUpdate,
         name:nameClienteUpdate == null ? '' : nameClienteUpdate,
         email:emailClienteUpdate == null ? '' : emailClienteUpdate,
         age:ageClienteUpdate == null ? '' : ageClienteUpdate,        
+        password:passwordClienteUpdate == null ? '' : passwordClienteUpdate,   
     }
     console.log(cliente)
 
     try {
-        const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client',{
+        const datos = await fetch('http://168.138.233.89:8080/api/Client/update',{
             method:'PUT',
             mode: 'cors',
             headers: {
@@ -137,29 +136,33 @@ const cargarDatosModalCliente = async (id) => {
     console.log(id)
     const modalBody = document.getElementById('modalBodyCliente');
     try {
-        const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client/'+id);
+        const datos = await fetch('http://168.138.233.89:8080/api/Client/'+id);
         const res = await datos.json();
         modalBody.innerHTML = `
         <div class="col-sm-4 mt-3">
         <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="idClienteUpdate" value="${res.items[0].id}" placeholder="id" disabled>
+            <input type="number" class="form-control" id="idClienteUpdate" value="${res.idClient}" placeholder="id" disabled>
             <label for="floatingInput">Id</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="nameClienteUpdate" value="${res.items[0].name}" placeholder="name" required>
+            <input type="text" class="form-control" id="nameClienteUpdate" value="${res.name}" placeholder="name" required>
             <label for="floatingPassword">Nombre</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="emailClienteUpdate" value="${res.items[0].email}" placeholder="email">
-            <label for="floatingPassword">Marca</label>
+            <input type="email" class="form-control" id="emailClienteUpdate" value="${res.email}" placeholder="email">
+            <label for="floatingPassword">Email</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="ageClienteUpdate" value="${res.items[0].age}" placeholder="edad">
-            <label for="floatingPassword">Modelo</label>
-          </div>      
+            <input type="number" class="form-control" id="ageClienteUpdate" value="${res.age}" placeholder="edad">
+            <label for="floatingPassword">Edad</label>
+          </div>  
+          <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="passwordClienteUpdate" value="${res.password}" placeholder="password">
+          <label for="floatingPassword">Edad</label>
+        </div>                
       </div>
         `;
-        console.log(res.items[0])
+        
     } catch (error) {
         console.log(error)
     }

@@ -1,35 +1,32 @@
 console.log('corriendo disfraz')
 
 
-const limpiarDisfraz = () => {
-    const idDisfraz = document.getElementById('idDisfraz').value = '';
-    const nameDisfraz = document.getElementById('nameDisfraz').value = '';
-    const brandDisfraz = document.getElementById('brandDisfraz').value = '';
-    const modelDisfraz = document.getElementById('modelDisfraz').value = '';
-    const category_idDisfraz = document.getElementById('category_idDisfraz').value = '';
+const limpiarDisfraz = () => {    
+    document.getElementById('nameDisfraz').value = '';
+    document.getElementById('brandDisfraz').value = '';
+    document.getElementById('descriptionDisfraz').value = '';
+    document.getElementById('yearDisfraz').value = '';
 }
 
-const guardarDisfraz = async () => {
-    const idDisfraz = document.getElementById('idDisfraz').value;
+const guardarDisfraz = async () => {  
     const nameDisfraz = document.getElementById('nameDisfraz').value;
     const brandDisfraz = document.getElementById('brandDisfraz').value;
-    const modelDisfraz = document.getElementById('modelDisfraz').value;
-    const category_idDisfraz = document.getElementById('category_idDisfraz').value;
-    console.log(idDisfraz)
-    if(idDisfraz==''){
+    const descriptionDisfraz = document.getElementById('descriptionDisfraz').value;    
+    const yearDisfraz = document.getElementById('yearDisfraz').value;
+    
+    if(nameDisfraz==''){
         return alert('Debe ingresar ID');
     }
 
-    const disfraz = {
-        id:idDisfraz,
+    const disfraz = {        
         brand:brandDisfraz,
-        model:modelDisfraz,
-        category_id:category_idDisfraz,
+        year:yearDisfraz,
+        description:descriptionDisfraz,        
         name:nameDisfraz
     }
 
     try {
-        const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/costume/costume',{
+        const datos = await fetch('http://168.138.233.89:8080/api/Costume/save',{
             method:'POST',   
             mode: 'cors',
             headers: {
@@ -51,19 +48,18 @@ const guardarDisfraz = async () => {
 }
 
 const cargarDisfraz = async () => {
-    const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/costume/costume')
+    const datos = await fetch('http://168.138.233.89:8080/api/Costume/all')
     const respuesta = await datos.json();
     
     const tablaDisfraz = document.getElementById('tablaDisfraz');
     let stringDisfraz = '';
-    respuesta.items.forEach(element => {        
+    respuesta.forEach(element => {        
         stringDisfraz += `
-        <tr>
-            <th scope="row">${element.id}</th>
+        <tr>            
             <td>${element.name}</td>
             <td>${element.brand}</td>
-            <td>${element.model}</td>
-            <td>${element.category_id}</td>
+            <td>${element.description}</td>
+            <td>${element.year}</td>
             <td onclick="eliminarDisfraz(${element.id})"><i class="bi bi-trash rojo pointer" name="eliminar"></i></td>
             <td><span onclick="cargarDatosModal(${element.id})" class="azul pointer" data-bs-toggle="modal" data-bs-target="#exampleModal">Ver</span> <i onclick="cargarDatosModal(${element.id})" class="bi bi-eye azul pointer" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
             
@@ -80,7 +76,7 @@ window.onload = cargarDisfraz();
 const eliminarDisfraz = async (id) => {
     console.log(id)
     try {
-        const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/costume/costume',{
+        const datos = await fetch('http://168.138.233.89:8080/api/Costume/'+id,{
         method:'DELETE',
         mode:'cors',
         headers: {
@@ -117,25 +113,23 @@ const showToast = (metodo,name) => {
     toast.show()
 }
 
-const actualizarDisfraz = async (id) => {
-    console.log(id)
+const actualizarDisfraz = async () => {    
     const idDisfrazUpdate = document.getElementById('idDisfrazUpdate').value;
     const nameDisfrazUpdate = document.getElementById('nameDisfrazUpdate').value;
     const brandDisfrazUpdate = document.getElementById('brandDisfrazUpdate').value;
-    const modelDisfrazUpdate = document.getElementById('modelDisfrazUpdate').value;
-    const category_idDisfrazUpdate = document.getElementById('category_idDisfrazUpdate').value;
+    const descriptionDisfrazUpdate = document.getElementById('descriptionDisfrazUpdate').value;
+    
 
     const disfraz = {
         id:idDisfrazUpdate,
-        brand:brandDisfrazUpdate == null ? '' : brandDisfrazUpdate,
-        model:modelDisfrazUpdate == null ? '' : modelDisfrazUpdate,
-        category_id:category_idDisfrazUpdate == null ? '' : category_idDisfrazUpdate,
+        brand:brandDisfrazUpdate == null ? '' : brandDisfrazUpdate,       
+        description: descriptionDisfrazUpdate,
         name:nameDisfrazUpdate == null ? '' : nameDisfrazUpdate
     }
     console.log(disfraz)
 
     try {
-        const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/costume/costume',{
+        const datos = await fetch('http://168.138.233.89:8080/api/Costume/update',{
             method:'PUT',
             mode: 'cors',
             headers: {
@@ -156,33 +150,30 @@ const cargarDatosModal = async (id) => {
     console.log(id)
     const modalBody = document.getElementById('modalBody');
     try {
-        const datos = await fetch('https://g611e17c3e9988a-dbreto2.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/costume/costume/'+id);
+        const datos = await fetch('http://168.138.233.89:8080/api/Costume/'+id);
         const res = await datos.json();
+        console.log(res)
         modalBody.innerHTML = `
         <div class="col-sm-4 mt-3">
         <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="idDisfrazUpdate" value="${res.items[0].id}" placeholder="id"  disabled>
+            <input type="number" class="form-control" id="idDisfrazUpdate" value="${res.id}" placeholder="id"  disabled>
             <label for="floatingInput">Id</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="nameDisfrazUpdate" value="${res.items[0].name}" placeholder="name" required>
+            <input type="text" class="form-control" id="nameDisfrazUpdate" value="${res.name}" placeholder="name" required>
             <label for="floatingPassword">Nombre</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="brandDisfrazUpdate" value="${res.items[0].brand}" placeholder="brand">
+            <input type="text" class="form-control" id="brandDisfrazUpdate" value="${res.brand}" placeholder="brand">
             <label for="floatingPassword">Marca</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="modelDisfrazUpdate" value="${res.items[0].model}" placeholder="modelo">
+            <input type="number" class="form-control" id="descriptionDisfrazUpdate" value="${res.description}" placeholder="modelo">
             <label for="floatingPassword">Modelo</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="category_idDisfrazUpdate" value="${res.items[0].category_id}" placeholder="category id">
-            <label for="floatingPassword">Category Id</label>
-          </div>
+          </div>          
       </div>
         `;
-        console.log(res.items[0])
+        
     } catch (error) {
         console.log(error)
     }
